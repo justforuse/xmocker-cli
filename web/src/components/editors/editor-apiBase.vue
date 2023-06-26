@@ -118,7 +118,7 @@ export default {
         url: '/api',
         path: '',
         pathEqual: '',
-        delay: 0,
+        delay: 200,
         description: '',
         project: '',
         afterFunc: null,
@@ -184,8 +184,18 @@ export default {
       this.formValidate.project = query.project
     }
     this.copyToObj(this.formValidate, this.info, [['id', '_id']])
+    window.addEventListener('keydown', this.saveListener)
+  },
+  unmounted () {
+    window.removeEventListener('keydown', this.saveListener)
   },
   methods: {
+    saveListener (e) {
+      if (e.key === 's' && e.metaKey) {
+        this.handleSubmit('formValidate')
+        e.preventDefault()
+      }
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
